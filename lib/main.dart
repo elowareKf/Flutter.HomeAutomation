@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:home_automation_app/serivces/HomeServer.dart';
+import 'package:home_automation_app/service/HomeServer.dart';
 
 void main() => runApp(MyApp());
 
@@ -26,13 +26,25 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  List<Io> _ioState = List<Io>();
 
-  void _incrementCounter() async {
-    try{
-      await HomeServer().sendIoCommand(0, 0);
-    }
-    on Exception catch (exce){
+  @override
+  void initState() {
+    super.initState();
+    HomeServer().getState().then((ioState) {
+      setState(() {
+        _ioState = ioState;
+      });
+    });
+  }
+
+  void _callServer(int io, int value) async {
+    try {
+      var result = await HomeServer().sendIoCommand(io, value);
+      setState(() {
+        _ioState = result;
+      });
+    } on Exception catch (exce) {
       print('Error occured...');
       print(exce);
     }
@@ -44,22 +56,23 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.display1,
-            ),
-          ],
-        ),
-      ),
+      body: ListView(
+          children: _ioState
+              .map((io) => Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(io.name),
+                      RaisedButton(
+                        child: Text(io.value > 0 ? 'An' : 'Aus'),
+                        onPressed: () {
+                          _callServer(io.id, io.value > 0 ? 0 : 255);
+                        },
+                      )
+                    ],
+                  ))
+              .toList()),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: () => _callServer(0, 100),
         tooltip: 'Increment',
         child: Icon(Icons.add),
       ),

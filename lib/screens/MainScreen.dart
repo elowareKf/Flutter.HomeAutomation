@@ -1,11 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:home_automation_app/service/HomeServer.dart';
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  final String title;
-
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
@@ -39,7 +36,23 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text('Blätterberg Automation'),
+        actions: <Widget>[
+          PopupMenuButton(
+            itemBuilder: (BuildContext context) {
+              return <PopupMenuItem>[
+                PopupMenuItem(
+                  child: FlatButton(
+                    child: Text('Einstellungen'),
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/settings');
+                    },
+                  ),
+                )
+              ];
+            },
+          ),
+        ],
       ),
       bottomNavigationBar: BottomAppBar(
         child: SizedBox(
@@ -52,21 +65,21 @@ class _MyHomePageState extends State<MyHomePage> {
         child: ListView(
             children: _ioState
                 .map((io) => Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text(
-                  io.name,
-                  style: Theme.of(context).textTheme.button,
-                ),
-                Switch(
-                  value: io.value > 0,
-                  //child: Text(io.value > 0 ? 'An' : 'Aus'),
-                  onChanged: (value) {
-                    _callServer(io.id, io.value > 0 ? 0 : 1);
-                  },
-                )
-              ],
-            ))
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text(
+                          io.name,
+                          style: Theme.of(context).textTheme.button,
+                        ),
+                        Switch(
+                          value: io.value > 0,
+                          //child: Text(io.value > 0 ? 'An' : 'Aus'),
+                          onChanged: (value) {
+                            _callServer(io.id, io.value > 0 ? 0 : 1);
+                          },
+                        )
+                      ],
+                    ))
                 .toList()),
       ),
     );

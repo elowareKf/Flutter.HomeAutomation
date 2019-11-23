@@ -65,17 +65,12 @@ class _MyHomePageState extends State<MyHomePage> {
                       RaisedButton(
                         child: Text(io.value > 0 ? 'An' : 'Aus'),
                         onPressed: () {
-                          _callServer(io.id, io.value > 0 ? 0 : 255);
+                          _callServer(io.id, io.value > 0 ? 0 : 1);
                         },
                       )
                     ],
                   ))
               .toList()),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _callServer(0, 100),
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ),
     );
   }
 }

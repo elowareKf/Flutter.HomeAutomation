@@ -2,7 +2,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class HomeServer {
-  static String baseUrl = 'http://192.168.178.64:3000/api/revolution/';
+  static String baseUrl = 'http://192.168.178.89:3001/api/revolution/';
 
   static dynamic _getHeader() => {'Content-Type': 'application/json'};
 

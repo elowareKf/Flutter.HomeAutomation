@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:home_automation_app/models/Io.dart';
 import 'package:home_automation_app/service/HomeServer.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -45,7 +46,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: FlatButton(
                     child: Text('Einstellungen'),
                     onPressed: () {
-                      Navigator.pushNamed(context, '/settings');
+                      Navigator.pushNamed(context, '/settings', arguments: this._ioState);
                     },
                   ),
                 )

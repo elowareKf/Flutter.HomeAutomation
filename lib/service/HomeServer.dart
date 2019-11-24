@@ -1,3 +1,4 @@
+import 'package:home_automation_app/models/Io.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -43,15 +44,11 @@ class HomeServer {
 
     return _decodeResponse(ioState);
   }
+
+  Future<void> updateDescription(int id, String description) async{
+    await Future.delayed(Duration(seconds: 1));
+    print('Changing $id to $description');
+  }
 }
 
-class IoResult {
-  List<String> names;
-  List<int> values;
-}
 
-class Io {
-  int id;
-  String name;
-  int value;
-}

@@ -1,10 +1,11 @@
-import 'package:home_automation_app/models/Io.dart';
-import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:home_automation_app/models/Io.dart';
+import 'package:http/http.dart' as http;
+
 class HomeServer {
-  // static String baseUrl = 'http://192.168.178.89:3001/api/revolution/';
-  static String baseUrl = 'http://192.168.178.63:3000/api/revolution/';
+  // static String baseUrl = 'http://192.168.178.89:3001/api/revpi/';
+  static String baseUrl = 'http://192.168.178.63:3000/api/revpi/';
 
   static dynamic _getHeader() => {'Content-Type': 'application/json'};
 
@@ -35,7 +36,7 @@ class HomeServer {
   }
 
   Future<List<Io>> sendIoCommand(int io, int value) async {
-    var result = await http.put(baseUrl,
+    var result = await http.patch(baseUrl,
         body: jsonEncode({"io": io, "value": value}), headers: _getHeader());
 
     if (result.statusCode != 200) throw 'Communication problem';
@@ -45,10 +46,10 @@ class HomeServer {
     return _decodeResponse(ioState);
   }
 
-  Future<void> updateDescription(int id, String description) async{
-    await Future.delayed(Duration(seconds: 1));
-    print('Changing $id to $description');
+  Future<void> updateDescription(int id, String description) async {
+    var result = await http.put(baseUrl,
+        body: jsonEncode({"io": id, "description": description}), headers: _getHeader());
+
+    if (result.statusCode != 201) throw 'Communication problem';
   }
 }
-
-

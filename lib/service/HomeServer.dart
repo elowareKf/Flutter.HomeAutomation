@@ -4,8 +4,8 @@ import 'package:home_automation_app/models/Io.dart';
 import 'package:http/http.dart' as http;
 
 class HomeServer {
-  // static String baseUrl = 'http://192.168.178.89:3001/api/revpi/';
-  static String baseUrl = 'http://192.168.178.63:3000/api/revpi/';
+  static String baseUrl = 'http://192.168.178.89:3001/api/revpi/';
+  //static String baseUrl = 'http://192.168.178.63:3000/api/revpi/';
 
   static dynamic _getHeader() => {'Content-Type': 'application/json'};
 

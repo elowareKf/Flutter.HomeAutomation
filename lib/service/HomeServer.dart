@@ -5,17 +5,22 @@ import 'package:http/http.dart' as http;
 
 class HomeServer {
   static String baseUrl = 'http://192.168.178.89:3001/api/revpi/';
-  //static String baseUrl = 'http://192.168.178.63:3000/api/revpi/';
+  //static String baseUrl = 'http://192.168.1.103:3001/api/revpi/';
 
   static dynamic _getHeader() => {'Content-Type': 'application/json'};
 
   Future<List<Io>> getState() async {
-    var result = await http.get(baseUrl, headers: _getHeader());
+    try {
+      var result = await http.get(baseUrl, headers: _getHeader());
 
-    if (result.statusCode != 200) throw 'Communication problem';
+      if (result.statusCode != 200) throw 'Communication problem';
 
-    var ioState = jsonDecode(result.body);
-    return _decodeResponse(ioState);
+      var ioState = jsonDecode(result.body);
+      return _decodeResponse(ioState);
+    }
+    on Exception{
+      return List<Io>();
+    }
   }
 
   List<Io> _decodeResponse(Map<String, dynamic> ioState) {

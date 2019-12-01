@@ -63,23 +63,26 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Padding(
         padding: EdgeInsets.all(10),
-        child: ListView(
+        child: GridView(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3, mainAxisSpacing: 8, crossAxisSpacing: 8),
             children: _ioState
-                .map((io) => Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text(
-                          io.name,
-                          style: Theme.of(context).textTheme.button,
+                .map((io) => GridTile(
+                      child: GestureDetector(
+                        onTap: () => _callServer(io.id, io.value > 0 ? 0 : 1),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(25)),
+                            color: io.value > 0 ? Colors.brown[500] : Colors.grey,
+                          ),
+                          child: Center(
+                            child: Text(
+                              io.name,
+                              style: Theme.of(context).textTheme.title,
+                            ),
+                          ),
                         ),
-                        Switch(
-                          value: io.value > 0,
-                          //child: Text(io.value > 0 ? 'An' : 'Aus'),
-                          onChanged: (value) {
-                            _callServer(io.id, io.value > 0 ? 0 : 1);
-                          },
-                        )
-                      ],
+                      ),
                     ))
                 .toList()),
       ),
